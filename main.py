@@ -62,3 +62,61 @@ def get_body_part():
         print("Invalid choice. Defaulting to Full Body.")
         return "full body"
 
+def get_time():
+    print("\nHow much time do you have?")
+    print("1. 20 minutes")
+    print("2. 40 minutes")
+    print("3. 60 minutes")
+
+    choice = input("Enter a number (1-3): ")
+
+    if choice == "1":
+        return 20
+    elif choice == "2":
+        return 40
+    else:
+        return 60
+
+def build_routine(body_part, time):
+    exercises = routines[body_part]
+
+    if time == 20:
+        return exercises[:2]
+    elif time == 40:
+        return exercises[:3]
+    else:
+        return exercises
+
+def print_routine(body_part, routine):
+    print("\n----------------------------")
+    print("Your Workout Plan:")
+    print("Target Area:", body_part.title())
+    print("Warm-up: 5 minutes light cardio")
+    print("----------------------------")
+    for exercise in routine:
+        print("Exercise:", exercise["name"])
+        print("Sets:", exercise["sets"])
+        print("Reps:", exercise["reps"])
+        print("Rest:", exercise["rest"])
+        print()
+
+def run_again():
+    choice = input("Do you want a different routine? (yes/no): ")
+    return choice.lower() == "yes"
+
+# Main Program
+
+
+running = True
+
+while running:
+    show_menu()
+    body_part = get_body_part()
+    time = get_time()
+    routine = build_routine(body_part, time)
+    print_routine(body_part, routine)
+    running = run_again()
+
+print("\nThanks for using JohnMax Gym Routine!")
+
+
