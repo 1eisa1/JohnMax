@@ -34,82 +34,94 @@ routines = {
 ]
 }
 
-# Functions
+# Procedures
 
 def show_menu():
-    print("\nWelcome to JohnMax Gym Routine!")
-    print("What do you want to train?")
-    print("1. Arms")
-    print("2. Legs")
-    print("3. Chest")
-    print("4. Back")
-    print("5. Full Body")
+    options = ["Arms", "Legs", "Chest", "Back", "Full Body"]
+    # Sequence + Iteration
+    for i in range(len(options)):
+        print(str(i + 1) + ".", options[i])
+    # Selection
+    if len(options) > 0:
+        print("Choose a workout from the menu above.")
+
 
 def get_body_part():
     choice = input("Enter a number (1-5): ")
-
+    # Selection
     if choice == "1":
-        return "arms"
+        body_part = "arms"
     elif choice == "2":
-        return "legs"
+        body_part = "legs"
     elif choice == "3":
-        return "chest"
+        body_part = "chest"
     elif choice == "4":
-        return "back"
-    elif choice == "5":
-        return "full body"
+        body_part = "back"
     else:
-        print("Invalid choice. Defaulting to Full Body.")
-        return "full body"
+        body_part = "full body"
+    # Iteration (simple loop for confirmation)
+    for i in range(1):
+        print("You selected:", body_part)
+
+    return body_part
+
 
 def get_time():
-    print("\nHow much time do you have?")
-    print("1. 20 minutes")
-    print("2. 40 minutes")
-    print("3. 60 minutes")
-
-    choice = input("Enter a number (1-3): ")
-
-    if choice == "1":
-        return 20
-    elif choice == "2":
-        return 40
+    times = [20, 40, 60]
+    for t in times:
+        print(t, "minutes")
+    choice = input("Choose workout time (20/40/60): ")
+    if choice == "20":
+        time = 20
+    elif choice == "40":
+        time = 40
     else:
-        return 60
+        time = 60
+    return time
+
 
 def build_routine(body_part, time):
     exercises = routines[body_part]
-
+    selected = []
     if time == 20:
-        return exercises[:2]
+        limit = 2
     elif time == 40:
-        return exercises[:3]
+        limit = 3
     else:
-        return exercises
+        limit = len(exercises)
+    for i in range(limit):
+        selected.append(exercises[i])
+    return selected
+
 
 def print_routine(body_part, routine):
-    print("\n----------------------------")
-    print("Your Workout Plan:")
-    print("Target Area:", body_part.title())
-    print("Warm-up: 5 minutes light cardio")
-    print("----------------------------")
+    print("\nWorkout Plan for:", body_part.upper())
+    print("Warm-up: 5 minutes light cardio\n")
     for exercise in routine:
         print("Exercise:", exercise["name"])
         print("Sets:", exercise["sets"])
         print("Reps:", exercise["reps"])
         print("Rest:", exercise["rest"])
-        print()
+        print("--------------------")
+    if len(routine) == 0:
+        print("No exercises found.")
+
 
 def run_again():
-    choice = input("Do you want a different routine? (yes/no): ")
-    return choice.lower() == "yes"
+    answer = input("Do you want another routine? (yes/no): ")
+    for i in range(1):
+        print("Checking your answer...")
+    if answer.lower() == "yes":
+        return True
+    else:
+        return False
 
-# Main Program
 
 
 running = True
 
 while running:
+    print("\nWelcome to JohnMax Gym Routine!")
     show_menu()
     body_part = get_body_part()
     time = get_time()
@@ -117,6 +129,4 @@ while running:
     print_routine(body_part, routine)
     running = run_again()
 
-print("\nThanks for using JohnMax Gym Routine!")
-
-
+print("\nThanks for using JohnMax Gym Routine ")
