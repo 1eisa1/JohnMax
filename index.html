@@ -3,268 +3,670 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Simple Login Demo</title>
+  <title>JohnMax Gym Routine</title>
+
   <style>
-    body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; }
-    .container { max-width: 420px; margin: 40px auto; background:#fff; padding: 20px; border-radius: 10px; }
-    h1 { margin-top: 0; }
-    label { display:block; margin-top: 12px; }
-    input { width:100%; padding:10px; margin-top:6px; box-sizing:border-box; }
-    button { width:100%; padding:10px; margin-top:14px; cursor:pointer; }
-    .row { display:flex; gap:10px; margin-top: 12px; }
-    .row button { width: 50%; }
-    .msg { margin-top: 12px; padding: 10px; border-radius: 8px; display:none; }
-    .msg.ok { background:#e7f7ea; border:1px solid #b7e4c7; color:#1b5e20; }
-    .msg.err { background:#fdecea; border:1px solid #f5c6cb; color:#7f1d1d; }
-    .small { color:#555; font-size: 0.9rem; margin-top: 8px; }
-    .link { background:none; border:none; color:#2563eb; text-decoration:underline; padding:0; margin-top:10px; cursor:pointer; }
-    .hidden { display:none; }
-    .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; }
-    .pill { background:#111827; color:#fff; padding:6px 10px; border-radius: 999px; font-size: 0.85rem; }
+    :root{
+      --text:#0b1220;
+      --muted:#64748b;
+      --line: rgba(255,255,255,0.20);
+
+      --panel: rgba(255,255,255,0.92);
+      --panel2: rgba(255,255,255,0.78);
+
+      --accent1:#7c3aed;  /* purple */
+      --accent2:#06b6d4;  /* cyan */
+      --accent3:#22c55e;  /* green */
+
+      --btn:#0b1220;
+      --btn2: rgba(255,255,255,0.85);
+
+      --shadow: 0 18px 50px rgba(0,0,0,0.25);
+      --shadow2: 0 10px 24px rgba(0,0,0,0.14);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family: Arial, sans-serif;
+      color: var(--text);
+
+      /* ✅ Styled background (looks like a real app) */
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(124,58,237,0.55) 0%, transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(6,182,212,0.45) 0%, transparent 55%),
+        radial-gradient(900px 600px at 45% 90%, rgba(34,197,94,0.35) 0%, transparent 55%),
+        linear-gradient(180deg, #070a12 0%, #0b1220 100%);
+      padding: 24px;
+    }
+
+    .wrap{
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding: 18px 18px;
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 1.65rem;
+      letter-spacing: 0.2px;
+    }
+    .brand .sub{
+      margin-top:4px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .pill{
+      color:#fff;
+      font-weight: 900;
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      box-shadow: var(--shadow2);
+    }
+
+    .panel{
+      margin-top: 14px;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--panel2);
+      box-shadow: var(--shadow2);
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(10px);
+    }
+
+    .msg{
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      display:none;
+      font-weight: 900;
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(10px);
+    }
+    .ok{ background: rgba(34,197,94,0.15); color:#064e3b; }
+    .err{ background: rgba(239,68,68,0.16); color:#7f1d1d; }
+
+    h2{ margin: 0 0 10px 0; }
+    .small{ color: var(--muted); font-size: 0.95rem; }
+
+    label{
+      display:block;
+      margin-top: 12px;
+      font-weight: 900;
+    }
+
+    input, select{
+      width:100%;
+      padding: 11px 12px;
+      margin-top: 6px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,0.15);
+      background: rgba(255,255,255,0.95);
+      outline:none;
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus{
+      border-color: rgba(6,182,212,0.65);
+      box-shadow: 0 0 0 4px rgba(6,182,212,0.18);
+    }
+
+    .row{
+      display:flex;
+      gap: 12px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    .row > *{
+      flex:1;
+      min-width: 220px;
+    }
+
+    button{
+      border:0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 900;
+      cursor:pointer;
+      font-size: 1rem;
+    }
+
+    .btn{
+      width:100%;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      color:#fff;
+      box-shadow: var(--shadow2);
+    }
+    .btn:hover{ filter: brightness(1.05); }
+
+    .btn2{
+      width:100%;
+      background: rgba(255,255,255,0.85);
+      color: var(--text);
+      border: 1px solid rgba(15,23,42,0.10);
+    }
+
+    .hidden{ display:none; }
+
+    /* ✅ Workout cards: aligned + clean */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+    @media (max-width: 760px){
+      .cards{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(15,23,42,0.10);
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+
+      display:flex;
+      flex-direction:column;
+      min-height: 340px;
+    }
+
+    .card img{
+      width:100%;
+      height: 170px;         /* fixed height so cards align */
+      object-fit: cover;
+      display:block;
+      background: #e2e8f0;
+    }
+
+    .cardBody{
+      padding: 14px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .cardTitle{
+      margin:0;
+      font-size: 1.05rem;
+      font-weight: 1000;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+    }
+
+    .chip{
+      background: rgba(6,182,212,0.12);
+      border: 1px solid rgba(6,182,212,0.20);
+      color:#075985;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 900;
+    }
+
+    a.link{
+      margin-top:auto;
+      font-weight: 1000;
+      color: #0ea5e9;
+      text-decoration:none;
+    }
+    a.link:hover{ text-decoration: underline; }
+
+    /* Timer */
+    .timerBox{
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: rgba(11,18,32,0.90);
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: var(--shadow2);
+      backdrop-filter: blur(8px);
+    }
+
+    .timerRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .time{
+      font-size: 2.3rem;
+      font-weight: 1000;
+      letter-spacing: 1px;
+    }
+
+    .timerBtns button{
+      background: rgba(255,255,255,0.92);
+      margin-left: 8px;
+      font-weight: 900;
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
+  <div class="wrap">
     <div class="topbar">
-      <h1 id="pageTitle">Welcome</h1>
+      <div class="brand">
+        <h1 id="pageTitle">JohnMax Gym Routine</h1>
+        <div class="sub">Generate a workout plan fast — no guessing.</div>
+      </div>
       <span class="pill" id="statusPill">Guest</span>
     </div>
 
     <div id="message" class="msg"></div>
 
-    <!-- SIGN IN VIEW -->
-    <div id="signInView">
+    <!-- SIGN IN -->
+    <div id="signInView" class="panel">
       <h2>Sign In</h2>
       <label>Email</label>
       <input id="inEmail" type="email" placeholder="you@example.com" autocomplete="username"/>
-
       <label>Password</label>
       <input id="inPass" type="password" placeholder="Password" autocomplete="current-password"/>
 
-      <button id="signInBtn">Sign In</button>
-
-      <p class="small">Don’t have an account?</p>
-      <button class="link" id="goToSignUp">Create one (Sign Up)</button>
+      <div class="row">
+        <button class="btn" id="signInBtn">Sign In</button>
+        <button class="btn2" id="goToSignUp">Sign Up</button>
+      </div>
     </div>
 
-    <!-- SIGN UP VIEW -->
-    <div id="signUpView" class="hidden">
+    <!-- SIGN UP -->
+    <div id="signUpView" class="panel hidden">
       <h2>Sign Up</h2>
       <label>Name</label>
       <input id="upName" type="text" placeholder="Your name" autocomplete="name"/>
-
       <label>Email</label>
       <input id="upEmail" type="email" placeholder="you@example.com" autocomplete="username"/>
-
       <label>Password</label>
       <input id="upPass" type="password" placeholder="Create a password" autocomplete="new-password"/>
-
       <label>Confirm Password</label>
       <input id="upPass2" type="password" placeholder="Confirm password" autocomplete="new-password"/>
 
-      <button id="signUpBtn">Create Account</button>
-
-      <p class="small">Already have an account?</p>
-      <button class="link" id="goToSignIn">Go back to Sign In</button>
+      <div class="row">
+        <button class="btn" id="signUpBtn">Create Account</button>
+        <button class="btn2" id="goToSignIn">Back to Sign In</button>
+      </div>
     </div>
 
-    <!-- DASHBOARD VIEW (LOGGED IN) -->
-    <div id="dashboardView" class="hidden">
-      <h2>Dashboard</h2>
-      <p id="welcomeText">You are logged in.</p>
+    <!-- APP -->
+    <div id="appView" class="panel hidden">
+      <h2 id="welcomeHeader">Welcome to JohnMax Gym Routine!</h2>
+      <p class="small" id="welcomeSub">What would you want to hit today?</p>
+
+      <label>What do you want to hit?</label>
+      <select id="bodyPart">
+        <option value="arms">Arms</option>
+        <option value="legs">Legs</option>
+        <option value="chest">Chest</option>
+        <option value="back">Back</option>
+        <option value="full">Full Body</option>
+      </select>
+
+      <label>How long do you want the workout?</label>
+      <select id="workoutTime">
+        <option value="20">20 minutes</option>
+        <option value="40">40 minutes</option>
+        <option value="60">60 minutes</option>
+      </select>
 
       <div class="row">
-        <button id="logoutBtn">Logout</button>
-        <button id="deleteBtn" title="Deletes the account from this browser">Delete Account</button>
+        <button class="btn" id="generateBtn">Generate Workout</button>
+        <button class="btn2" id="logoutBtn">Logout</button>
       </div>
 
-      <p class="small">
-        This demo saves accounts in <b>localStorage</b> (only this browser/device).
-      </p>
+      <h2 style="margin-top:18px;">Your Workout</h2>
+      <div id="workoutArea" class="cards">
+        <p class="small">Click “Generate Workout” to see your plan.</p>
+      </div>
+
+      <div id="timerSection" class="timerBox hidden">
+        <div class="timerRow">
+          <div>
+            <div class="small" style="color:rgba(255,255,255,0.75); font-weight:900;">Workout Timer</div>
+            <div class="time" id="timerDisplay">20:00</div>
+            <div class="small" style="color:rgba(255,255,255,0.75); font-weight:800;">Timer matches your selected time (20/40/60).</div>
+          </div>
+          <div class="timerBtns">
+            <button id="startBtn">Start</button>
+            <button id="pauseBtn">Pause</button>
+            <button id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     // -----------------------------
-    // Helpers
+    // Messages + Views
     // -----------------------------
-    function showMsg(text, type) {
+    function showMsg(text, type){
       const box = document.getElementById("message");
       box.textContent = text;
       box.className = "msg " + (type === "ok" ? "ok" : "err");
       box.style.display = "block";
     }
-
-    function clearMsg() {
+    function clearMsg(){
       const box = document.getElementById("message");
       box.style.display = "none";
       box.textContent = "";
     }
-
-    function showView(viewId) {
+    function showView(viewId){
       clearMsg();
-      document.getElementById("signInView").classList.add("hidden");
-      document.getElementById("signUpView").classList.add("hidden");
-      document.getElementById("dashboardView").classList.add("hidden");
+      ["signInView","signUpView","appView"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
       document.getElementById(viewId).classList.remove("hidden");
     }
-
-    function setStatus(text) {
+    function setStatus(text){
       document.getElementById("statusPill").textContent = text;
     }
 
     // -----------------------------
-    // "Database" using localStorage
+    // Auth localStorage
     // -----------------------------
-    // Store users under key: "users"
-    // Format: { "email@example.com": { name: "Name", password: "pass" } }
-    function getUsers() {
+    function getUsers(){
       const raw = localStorage.getItem("users");
       return raw ? JSON.parse(raw) : {};
     }
-
-    function setUsers(usersObj) {
-      localStorage.setItem("users", JSON.stringify(usersObj));
+    function setUsers(obj){
+      localStorage.setItem("users", JSON.stringify(obj));
     }
-
-    // Logged-in session key: "currentUser"
-    function getCurrentUserEmail() {
-      return localStorage.getItem("currentUser"); // email string or null
+    function getCurrentUserEmail(){
+      return localStorage.getItem("currentUser");
     }
-
-    function setCurrentUserEmail(email) {
+    function setCurrentUserEmail(email){
       localStorage.setItem("currentUser", email);
     }
-
-    function clearCurrentUser() {
+    function clearCurrentUser(){
       localStorage.removeItem("currentUser");
     }
 
-    // -----------------------------
-    // Auth logic
-    // -----------------------------
-    function signUp(name, email, pass, pass2) {
-      // SEQUENCE: validate -> save -> message
-      if (!name || !email || !pass || !pass2) {
-        showMsg("Please fill in all fields.", "err");
-        return;
-      }
-
-      // SELECTION: check password match
-      if (pass !== pass2) {
-        showMsg("Passwords do not match.", "err");
-        return;
-      }
+    function signUp(name, email, pass, pass2){
+      if(!name || !email || !pass || !pass2) return showMsg("Please fill in all fields.", "err");
+      if(pass !== pass2) return showMsg("Passwords do not match.", "err");
 
       const users = getUsers();
+      if(users[email]) return showMsg("That email already exists. Try signing in.", "err");
 
-      // SELECTION: prevent duplicate email
-      if (users[email]) {
-        showMsg("That email is already registered. Try signing in.", "err");
-        return;
-      }
-
-      // Save user (demo only; real apps NEVER store plain passwords)
       users[email] = { name: name, password: pass };
       setUsers(users);
 
-      showMsg("Account created! Now sign in.", "ok");
+      showMsg("Account created! Please sign in.", "ok");
       showView("signInView");
-
-      // Clear signup inputs
-      document.getElementById("upName").value = "";
-      document.getElementById("upEmail").value = "";
-      document.getElementById("upPass").value = "";
-      document.getElementById("upPass2").value = "";
+      document.getElementById("upName").value="";
+      document.getElementById("upEmail").value="";
+      document.getElementById("upPass").value="";
+      document.getElementById("upPass2").value="";
     }
 
-    function signIn(email, pass) {
-      if (!email || !pass) {
-        showMsg("Enter your email and password.", "err");
-        return;
-      }
+    function signIn(email, pass){
+      if(!email || !pass) return showMsg("Enter email and password.", "err");
 
       const users = getUsers();
       const user = users[email];
+      if(!user) return showMsg("No account found. Please sign up.", "err");
+      if(user.password !== pass) return showMsg("Incorrect password.", "err");
 
-      // SELECTION: user exists + password matches
-      if (!user) {
-        showMsg("No account found with that email. Please sign up.", "err");
-        return;
-      }
-      if (user.password !== pass) {
-        showMsg("Incorrect password.", "err");
-        return;
-      }
-
-      // Set "session"
       setCurrentUserEmail(email);
-      showDashboard();
+      loadApp();
     }
 
-    function showDashboard() {
+    function logout(){
+      stopTimer();
+      clearCurrentUser();
+      setStatus("Guest");
+      showView("signInView");
+      showMsg("Logged out.", "ok");
+    }
+
+    function loadApp(){
       const email = getCurrentUserEmail();
       const users = getUsers();
-
-      // SELECTION: if session missing, go to sign in
-      if (!email || !users[email]) {
+      if(!email || !users[email]){
         clearCurrentUser();
         setStatus("Guest");
-        document.getElementById("pageTitle").textContent = "Welcome";
         showView("signInView");
         return;
       }
 
       const name = users[email].name;
-
       setStatus("Logged In");
-      document.getElementById("pageTitle").textContent = "Home";
-      document.getElementById("welcomeText").textContent =
-        "Welcome, " + name + "! You are signed in as " + email + ".";
+      document.getElementById("welcomeHeader").textContent =
+        "Welcome to JohnMax Gym Routine, " + name + "!";
+      showView("appView");
 
-      showView("dashboardView");
+      renderWorkout([]);
+      hideTimerSection();
+      setTimerFromDropdown();
     }
 
-    function logout() {
-      clearCurrentUser();
-      setStatus("Guest");
-      document.getElementById("pageTitle").textContent = "Welcome";
-      showView("signInView");
-      showMsg("You have been logged out.", "ok");
+    // -----------------------------
+    // ✅ Reliable workout photo system
+    // Uses Unsplash Source endpoints (more reliable than many direct hotlinks)
+    // If an image fails, it swaps to a fallback workout photo.
+    // -----------------------------
+    const FALLBACK_WORKOUT_PHOTO =
+      "https://source.unsplash.com/featured/900x500?gym,workout";
+
+    function photoURL(key){
+      // Unique “search” keywords per exercise (better workout-related photos)
+      // "sig" makes them not all identical
+      const map = {
+        bicep: "bicep,curl,dumbbell",
+        tricep: "tricep,dips,bench",
+        hammer: "hammer,curl,dumbbell",
+        overhead: "tricep,extension,dumbbell",
+        squats: "squat,barbell",
+        lunges: "lunge,fitness",
+        legpress: "leg,press,machine",
+        calf: "calf,raises",
+        pushup: "pushup,bodyweight",
+        bench: "bench,press,barbell",
+        fly: "chest,fly,dumbbell",
+        incline: "incline,press,dumbbell",
+        lat: "lat,pulldown,cable",
+        row: "seated,row,cable",
+        deadlift: "deadlift,barbell",
+        backext: "back,extension",
+        shoulder: "shoulder,press,dumbbell",
+        plank: "plank,core"
+      };
+
+      const q = map[key] || "gym,workout";
+      const sig = Math.floor(Math.random() * 9999);
+      return `https://source.unsplash.com/featured/900x500?${encodeURIComponent(q)}&sig=${sig}`;
     }
 
-    function deleteAccount() {
-      const email = getCurrentUserEmail();
-      const users = getUsers();
+    const workoutDB = {
+      arms: [
+        { name:"Bicep Curls", sets:3, reps:"12", rest:"60 sec", photoKey:"bicep",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+bicep+curls" },
+        { name:"Tricep Dips", sets:3, reps:"10", rest:"60 sec", photoKey:"tricep",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+tricep+dips" },
+        { name:"Hammer Curls", sets:3, reps:"12", rest:"60 sec", photoKey:"hammer",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+hammer+curls" },
+        { name:"Overhead Tricep Extension", sets:3, reps:"10", rest:"60 sec", photoKey:"overhead",
+          yt:"https://www.youtube.com/results?search_query=overhead+tricep+extension+how+to" }
+      ],
+      legs: [
+        { name:"Squats", sets:3, reps:"12", rest:"90 sec", photoKey:"squats",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+squats" },
+        { name:"Lunges", sets:3, reps:"10", rest:"60 sec", photoKey:"lunges",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+lunges" },
+        { name:"Leg Press", sets:3, reps:"12", rest:"90 sec", photoKey:"legpress",
+          yt:"https://www.youtube.com/results?search_query=leg+press+machine+how+to" },
+        { name:"Calf Raises", sets:3, reps:"15", rest:"60 sec", photoKey:"calf",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+calf+raises" }
+      ],
+      chest: [
+        { name:"Push-Ups", sets:3, reps:"10", rest:"60 sec", photoKey:"pushup",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+pushups" },
+        { name:"Bench Press", sets:3, reps:"8", rest:"90 sec", photoKey:"bench",
+          yt:"https://www.youtube.com/results?search_query=how+to+bench+press" },
+        { name:"Chest Fly", sets:3, reps:"12", rest:"60 sec", photoKey:"fly",
+          yt:"https://www.youtube.com/results?search_query=dumbbell+chest+fly+how+to" },
+        { name:"Incline Press", sets:3, reps:"8", rest:"90 sec", photoKey:"incline",
+          yt:"https://www.youtube.com/results?search_query=incline+dumbbell+press+how+to" }
+      ],
+      back: [
+        { name:"Lat Pulldown", sets:3, reps:"10", rest:"60 sec", photoKey:"lat",
+          yt:"https://www.youtube.com/results?search_query=lat+pulldown+how+to" },
+        { name:"Seated Row", sets:3, reps:"10", rest:"60 sec", photoKey:"row",
+          yt:"https://www.youtube.com/results?search_query=seated+cable+row+how+to" },
+        { name:"Deadlift", sets:3, reps:"6", rest:"120 sec", photoKey:"deadlift",
+          yt:"https://www.youtube.com/results?search_query=deadlift+how+to" },
+        { name:"Back Extension", sets:3, reps:"12", rest:"60 sec", photoKey:"backext",
+          yt:"https://www.youtube.com/results?search_query=back+extension+how+to" }
+      ],
+      full: [
+        { name:"Squats", sets:3, reps:"10", rest:"90 sec", photoKey:"squats",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+squats" },
+        { name:"Push-Ups", sets:3, reps:"10", rest:"60 sec", photoKey:"pushup",
+          yt:"https://www.youtube.com/results?search_query=how+to+do+pushups" },
+        { name:"Lat Pulldown", sets:3, reps:"10", rest:"60 sec", photoKey:"lat",
+          yt:"https://www.youtube.com/results?search_query=lat+pulldown+how+to" },
+        { name:"Shoulder Press", sets:3, reps:"10", rest:"60 sec", photoKey:"shoulder",
+          yt:"https://www.youtube.com/results?search_query=shoulder+press+how+to" },
+        { name:"Plank", sets:3, reps:"30 sec", rest:"60 sec", photoKey:"plank",
+          yt:"https://www.youtube.com/results?search_query=plank+how+to" }
+      ]
+    };
 
-      if (!email || !users[email]) {
-        showMsg("No account to delete.", "err");
+    function generateRoutine(bodyPart, minutes){
+      const list = workoutDB[bodyPart] || [];
+      let count = 2;
+      if(minutes === 40) count = 3;
+      if(minutes === 60) count = Math.min(5, list.length);
+      const routine = [];
+      for(let i=0; i<count; i++) routine.push(list[i]);
+      return routine;
+    }
+
+    function renderWorkout(routine){
+      const area = document.getElementById("workoutArea");
+      area.innerHTML = "";
+
+      if(!routine || routine.length === 0){
+        area.innerHTML = "<p class='small'>Click “Generate Workout” to see your plan.</p>";
         return;
       }
 
-      // Remove user + logout
-      delete users[email];
-      setUsers(users);
-      clearCurrentUser();
+      for(const ex of routine){
+        const imgSrc = photoURL(ex.photoKey);
 
-      setStatus("Guest");
-      document.getElementById("pageTitle").textContent = "Welcome";
-      showView("signInView");
-      showMsg("Account deleted from this browser.", "ok");
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${imgSrc}" alt="${ex.name}">
+          <div class="cardBody">
+            <p class="cardTitle">${ex.name}</p>
+            <div class="chips">
+              <span class="chip">Sets: ${ex.sets}</span>
+              <span class="chip">Reps: ${ex.reps}</span>
+              <span class="chip">Rest: ${ex.rest}</span>
+            </div>
+            <a class="link" href="${ex.yt}" target="_blank" rel="noopener noreferrer">
+              YouTube help: how to do it
+            </a>
+          </div>
+        `;
+
+        // ✅ Fallback if image fails (NO broken images)
+        const imgEl = card.querySelector("img");
+        imgEl.onerror = () => {
+          imgEl.onerror = null;
+          imgEl.src = FALLBACK_WORKOUT_PHOTO;
+        };
+
+        area.appendChild(card);
+      }
     }
 
     // -----------------------------
-    // Button Events
+    // Timer
     // -----------------------------
-    document.getElementById("goToSignUp").addEventListener("click", () => {
-      document.getElementById("pageTitle").textContent = "Create Account";
-      showView("signUpView");
-    });
+    let totalSeconds = 20 * 60;
+    let remainingSeconds = totalSeconds;
+    let timerInterval = null;
 
-    document.getElementById("goToSignIn").addEventListener("click", () => {
-      document.getElementById("pageTitle").textContent = "Welcome";
-      showView("signInView");
-    });
+    function formatTime(sec){
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
+    }
+    function updateTimerDisplay(){
+      document.getElementById("timerDisplay").textContent = formatTime(remainingSeconds);
+    }
+    function setTimerFromDropdown(){
+      const minutes = parseInt(document.getElementById("workoutTime").value, 10);
+      totalSeconds = minutes * 60;
+      remainingSeconds = totalSeconds;
+      stopTimer();
+      updateTimerDisplay();
+    }
+    function startTimer(){
+      if(timerInterval) return;
+      timerInterval = setInterval(() => {
+        if(remainingSeconds > 0){
+          remainingSeconds--;
+          updateTimerDisplay();
+        } else {
+          stopTimer();
+          showMsg("Time is up! Great job 💪", "ok");
+        }
+      }, 1000);
+    }
+    function stopTimer(){
+      if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+    function resetTimer(){
+      remainingSeconds = totalSeconds;
+      stopTimer();
+      updateTimerDisplay();
+    }
+    function showTimerSection(){
+      document.getElementById("timerSection").classList.remove("hidden");
+    }
+    function hideTimerSection(){
+      document.getElementById("timerSection").classList.add("hidden");
+      resetTimer();
+    }
+
+    // -----------------------------
+    // Button events
+    // -----------------------------
+    document.getElementById("goToSignUp").addEventListener("click", () => showView("signUpView"));
+    document.getElementById("goToSignIn").addEventListener("click", () => showView("signInView"));
 
     document.getElementById("signUpBtn").addEventListener("click", () => {
       const name = document.getElementById("upName").value.trim();
@@ -281,15 +683,33 @@
     });
 
     document.getElementById("logoutBtn").addEventListener("click", logout);
-    document.getElementById("deleteBtn").addEventListener("click", deleteAccount);
+    document.getElementById("workoutTime").addEventListener("change", setTimerFromDropdown);
 
-    // Allow Enter key to submit on sign in
-    document.getElementById("inPass").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") document.getElementById("signInBtn").click();
+    document.getElementById("generateBtn").addEventListener("click", () => {
+      const body = document.getElementById("bodyPart").value;
+      const minutes = parseInt(document.getElementById("workoutTime").value, 10);
+
+      const routine = generateRoutine(body, minutes);
+      renderWorkout(routine);
+
+      setTimerFromDropdown();
+      showTimerSection();
+      showMsg("Workout generated! The timer is below your workout. Start when ready.", "ok");
     });
 
-    // On page load: if already logged in, show dashboard
-    showDashboard();
+    document.getElementById("startBtn").addEventListener("click", startTimer);
+    document.getElementById("pauseBtn").addEventListener("click", stopTimer);
+    document.getElementById("resetBtn").addEventListener("click", resetTimer);
+
+    document.getElementById("inPass").addEventListener("keydown", (e) => {
+      if(e.key === "Enter") document.getElementById("signInBtn").click();
+    });
+
+    // -----------------------------
+    // On load
+    // -----------------------------
+    updateTimerDisplay();
+    loadApp();
   </script>
 </body>
 </html>
